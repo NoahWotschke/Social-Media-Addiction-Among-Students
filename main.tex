@@ -1,0 +1,138 @@
+\documentclass{article}
+\usepackage{csquotes}
+\usepackage{amssymb}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% packages
+\usepackage{listings}
+\usepackage{wrapfig}
+\usepackage{moresize}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{float}
+\title{Social Media Addiction and Student Life: Technical Documentation}
+\author{Charlotte de Croizant and Noah Lorys Wotschke}
+
+\usepackage[
+backend=biber,
+style=ieee,
+sorting=ynt
+]{biblatex}
+
+\addbibresource{references.bib}
+
+\begin{document}
+\maketitle
+
+\begin{abstract} 
+
+Brief summary of the project’s purpose and main findings.
+
+\end{abstract}
+
+\section{Motivation}
+
+\subsection{Overview and Research Questions}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+Social Media Addiction (SMA) refers to an excessive and difficult-to-control use of social media platforms that may create negative consequences in everyday life. The rapid development of digital technologies has made social media one of the main communication tools of modern life, especially among students. While these platforms offer communication and access to information, their excessive use has increasingly raised concerns regarding distraction, reduced productivity, sleep problems, and psychological strain.
+Previous studies have shown that problematic behaviors are rarely isolated and often interact with emotional regulation, personal habits, and lifestyle balance. In student populations, this relationship may be particularly visible because academic pressure, irregular schedules, and constant online presence can reinforce each other.
+Our project therefore focused on habits and feelings rather than personality traits. The objective was to explore whether specific routines or emotional states were associated with stronger tendencies toward problematic social media use. \\\\A concise overview of the course context and the specific questions your study addresses.
+
+\subsection{Relation to the Reference Paper}
+To examine these relationships, we adopted a network-based approach inspired by the study of Wang et al. (2024), which investigated the relationship between Dark Triad traits and social media addiction symptoms. While their focus was personality traits, our study adapted the same general method to student habits, feelings, and SMA tendencies. \\\\Summarize the key aspects of “A Network Analysis of the Relationship between Dark Triad Traits and Social Media Addiction in Adults” and explain how you adapted its methods to study student life.
+
+\section{Materials and Methods}
+
+Describe study design, recruitment, sample size, and participant demographics.
+
+\subsection{Participants}
+
+\setlength{\parskip}{1em}
+\setlength{\parindent}{0pt}
+
+Participants were recruited mainly through student networks at ETH Zurich and the University of Zurich, with additional responses from universities abroad. The questionnaire was distributed through personal contacts, teaching assistants, and student discussion groups.
+
+A total of 118 responses were collected. To ensure response quality, an attention-check question was included in the survey. After excluding 2 invalid responses, the final sample consisted of 116 participants.
+
+The sample was composed mainly of young university students, with participants aged between 18 and 29 years old (mean age = 21.50, SD = 2.60; median = 21). \\
+In terms of gender, the sample included 75 male participants, 37 female participants (34\%), and 1 non-binary participant. \\
+
+Regarding academic level, most respondents were Bachelor students (78), followed by Master students (32), while a small number were enrolled in PhD programs (3).
+Most participants studied at ETH Zurich or the University of Zurich, while around (30\%) came from universities in other European countries, including the Netherlands, France, Germany, and England.
+
+
+\subsection{Measures}
+
+Data were collected through an online questionnaire composed of three sections:
+\begin{itemize}
+    \item SMA indicators: six questions adapted from the reference paper, rated on a 1–5 scale.
+    \item Feelings: anxiousness, sadness, tiredness, stress, and frustration, rated on a 1–5 scale.
+    \item Habits: sleep, studying, sports, hobbies, and social time, measured using a time-based scale.
+\end{itemize}
+These three dimensions were combined to study possible interactions between digital behavior, emotions, and lifestyle.
+
+\subsection{Data Structure and Preprocessing}
+
+Briefly outline how the data are organized, any exclusion criteria (e.g., failed attention checks), and how missing data were treated.
+
+\subsection{Network Analysis}
+
+TEXT HERE
+
+\begin{equation} \label{eq:-1}
+ a^2 + b^2 = c^2
+\end{equation}
+
+\section{Analysis}
+
+TEXT HERE
+
+\subsection{Descriptive Statistics}
+
+TEXT HERE
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-4\baselineskip} % Adjust this value to move the image up or down.
+  \includegraphics[width=1\linewidth]{IMAGE HERE.png} 
+  \caption{CAPTION HERE}
+  \label{fig:wrapfig}
+\end{wrapfigure}
+
+\subsection{Network Analysis}
+
+TEXT HERE
+
+\subsection{Network Comparison}
+
+TEXT HERE
+
+\section{Ethical Considerations and Limitations}
+
+TEXT HERE
+
+
+\printbibliography
+
+\newpage
+\appendix
+
+\section{Code used to analyze data}
+\footnotesize\begin{lstlisting}[language=Python]
+# Provide only the essential code or refer to your repository here.
+\end{lstlisting}
+
+\section{Additional Materials}
+Include any supplementary details (e.g., full survey questions or detailed variable descriptions) if needed for replication.
+
+\end{document}
