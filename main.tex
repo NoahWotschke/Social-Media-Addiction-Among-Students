@@ -34,7 +34,7 @@ sorting=ynt
 
 \begin{abstract}
 This document describes the methodology behind our exploratory network analysis of social media addiction and emotional well-being among university-aged students.
-Following the partial-correlation network approach of Wang et al.\ (2025), we
+Following the partial-correlation network approach of Wang et al.~\cite{wang2025dark}, we
 combine the Bergen Social Media Addiction Scale (BSMAS) with a custom
 five-item Emotional Well-Being scale and estimate a single partial-correlation
 network on a sample of $N = 113$ participants. We assess Cronbach's $\alpha$
@@ -61,7 +61,7 @@ The questionnaire collected the following items:
         Binary), education level (Bachelor / Master / PhD / Post Doc), and
         field of study.
     \item \textbf{Social Media Addiction (SMA)}: the six items of the Bergen
-        Social Media Addiction Scale (Andreassen et al., 2012) -- Salience,
+        Social Media Addiction Scale~\cite{andreassen2012facebook} -- Salience,
         Tolerance, Mood Modification, Relapse, Withdrawal, and Conflict --
         each rated on a 5-point Likert scale
         (1 = ``very rarely'', 5 = ``very often'').
@@ -118,15 +118,15 @@ are appended to the cleaned dataset:
 The preprocessing and analysis pipelines are implemented in Python. The
 statistical work relies on standard scientific libraries: NumPy and pandas
 for data handling, SciPy for distributional quantiles and Pearson
-correlation, scikit-learn for the covariance estimator and the graphical
-lasso, and Matplotlib for figures. Network construction and the GraphML
-export are handled by NetworkX.
+correlation, scikit-learn~\cite{pedregosa2011scikit} for the covariance
+estimator and the graphical lasso, and Matplotlib for figures. Network
+construction and the GraphML export are handled by NetworkX~\cite{hagberg2008networkx}.
 
 \subsection{Visone}
 Final network layouts and visual styling are produced in
-Visone\footnote{\url{https://visone.ethz.ch/}}. The Python pipeline only
-exports a graph file with all relevant attributes; the actual layout, colour
-mapping, and edge-thickness mapping are applied in Visone.
+Visone~\cite{visone}. The Python pipeline only exports a graph file with
+all relevant attributes; the actual layout, colour mapping, and
+edge-thickness mapping are applied in Visone.
 
 \section{Data Analysis}
 
@@ -148,8 +148,8 @@ and education), category counts are reported.
 For each thematic cluster (SMA and FEELINGS) the mean and empirical standard
 deviation are reported for every individual item, as well as for the
 corresponding summed score together with its observed range. The number of
-participants meeting the established clinical BSMAS cut-off of $24$ is
-reported as well. Histograms of every item and of every summed score are
+participants meeting the established clinical BSMAS cut-off of $24$~\cite{luo2021bsmas}
+is reported as well. Histograms of every item and of every summed score are
 produced for visual inspection.
 
 \subsection{Internal Scale Consistency}
@@ -200,9 +200,10 @@ The plot is read qualitatively as a visual sanity check; no formal
 acceptance or rejection rule is applied.
 
 \subsubsection{Partial-Correlation Estimation}
-A sparse precision matrix is estimated with the graphical lasso, whose L1
-penalty parameter is selected by internal cross-validation (the value
-maximising the held-out log-likelihood is retained). The sparsity-inducing
+A sparse precision matrix is estimated with the graphical
+lasso~\cite{friedman2008sparse}, whose L1 penalty parameter is selected
+by internal cross-validation (the value maximising the held-out
+log-likelihood is retained). The sparsity-inducing
 penalty forces off-diagonal entries that are not supported by the data to
 exactly zero, which avoids the dense, noise-driven networks that a direct
 inversion of the empirical covariance would produce. The partial-correlation matrix is then obtained from the estimated precision
@@ -279,7 +280,7 @@ the nodes for which $H_0$ is rejected are considered as statistically significan
 
 \subsubsection{Bootstrapped CS-Coefficient}
 The stability of the BEI vector is quantified by the Correlation Stability
-(CS) coefficient, following Epskamp et al.\ (2018). In contrast to the
+(CS) coefficient, following Epskamp et al.~\cite{epskamp2018tutorial}. In contrast to the
 with-replacement bootstrap used above, the CS-coefficient is based on a
 case-dropping subsample bootstrap that draws subsets without
 replacement:
