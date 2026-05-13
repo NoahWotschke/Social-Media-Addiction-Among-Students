@@ -19,11 +19,12 @@
 \usepackage[colorlinks=true, allcolors=blue]{hyperref}
 \usepackage{float}
 \title{Social Media Addiction among students: Technical Documentation}
-\author{Charlotte de Croizant and Noah Lorys Wotschke}
+\author{Noah Lorys Wotschke and Charlotte de Croizant}
 
 \usepackage[
 backend=biber,
-style=ieee,
+style=apa,
+sortcites=true,
 sorting=ynt
 ]{biblatex}
 
@@ -34,21 +35,14 @@ sorting=ynt
 
 \begin{abstract}
 This document describes the methodology behind our exploratory network analysis of social media addiction and emotional well-being among university-aged students.
-Following the partial-correlation network approach of Wang et al.\ (2025), we
-combine the Bergen Social Media Addiction Scale (BSMAS) with a custom
-five-item Emotional Well-Being scale and estimate a single partial-correlation
-network on a sample of $N = 113$ participants. We assess Cronbach's $\alpha$
-for both scales, estimate edge weights via the graphical lasso, and compute
-Bridge Expected Influence (BEI) for every node. Each of these quantities is
-accompanied by a bootstrapped $95\%$ confidence interval, and the overall
-stability of the BEI vector is further quantified by a case-dropping
-Correlation Stability (CS) coefficient.
+Following the partial-correlation network approach of \cite{wang2025dark}, we combine the Bergen Social Media Addiction Scale (BSMAS) with a custom five-item Emotional Well-Being scale and estimate a single partial-correlation network on a sample of $N = 113$ participants. We assess Cronbach's $\alpha$ for both scales, estimate edge weights via the graphical lasso, and compute Bridge Expected Influence (BEI) for every node. Each of these quantities is
+accompanied by a bootstrapped $95\%$ confidence interval (CI), and the overall stability of the BEI vector is further quantified by a case-dropping Correlation Stability (CS) coefficient.
 \end{abstract}
 
 \section{Data Collection}
 
 \subsection{Questionnaire}
-Our data was collected via questionnaire, implemented as a Google Forms survey and distributed online. Recruitment relied on convenience sampling: the link was shared by teaching assistants, student associations, and student discussion groups at
+Our data was collected via a questionnaire, implemented as a Google Forms survey and distributed online. Recruitment relied on convenience sampling: the link was shared by teaching assistants, student associations, and student discussion groups at
 ETH Zurich and the University of Zurich, and forwarded by personal contacts
 to a small number of partner universities in the Netherlands, France,
 Germany, and the United Kingdom. Form responses were exported as a single
@@ -59,22 +53,22 @@ The questionnaire collected the following items:
 \begin{itemize}
     \item \textbf{Demographics}: age (numeric), gender (Male / Female / Non
         Binary), education level (Bachelor / Master / PhD / Post Doc), and
-        field of study.
+        field of study (text).
+        
     \item \textbf{Social Media Addiction (SMA)}: the six items of the Bergen
-        Social Media Addiction Scale (Andreassen et al., 2012) -- Salience,
-        Tolerance, Mood Modification, Relapse, Withdrawal, and Conflict --
-        each rated on a 5-point Likert scale
-        (1 = ``very rarely'', 5 = ``very often'').
+        Social Media Addiction Scale (BSMAS)(~\cite{andreassen2016relationship}, ~\cite{leung2020measurement}) (Salience, Tolerance, Mood Modification, Relapse, Withdrawal, and Conflict), rated on a 5-point Likert scale (1 = "very rarely", 5 = "very often").
+        
     \item \textbf{Emotional Well-Being (FEELINGS)}: a custom five-item
         scale capturing negative affect (Tired, Stressed, Sad, Anxious,
         Frustrated), rated on the same 5-point Likert scale.
+        
     \item \textbf{Attention check (AT)}: a single forced-response item
         (``Please select option 4 out of the 5 available choices'') with
         the expected answer ``Option 4''.
 \end{itemize}
 
 \subsection{Participants}
-In our case the form received $118$ raw responses. After the exclusions described in Section~\ref{sec:preprocessing}, the analytical sample contains $113$ respondents. 
+In our case the form received $118$ raw responses. After the exclusions described in Section ~\ref{sec:preprocessing}, the analytical sample contains $113$ respondents. 
 
 \section{Data Preprocessing}
 \label{sec:preprocessing}
@@ -96,13 +90,12 @@ Two filters are applied to the raw responses, in this order:
 
 \subsection{Categorical Encoding}
 The two non-numeric demographic items are mapped to integer codes so that
-they can be processed by the same numerical pipeline as the Likert items:
+they can be processed numerically:
 \begin{itemize}
     \item \textbf{Gender}: Male $\to 1$, Female $\to 2$, Non Binary $\to 3$.
-    \item \textbf{Education}: Bachelor $\to 1$, Master $\to 2$, PhD $\to 3$,
-        Post Doc $\to 4$. The codes preserve the natural ordering of academic
-        levels.
+    \item \textbf{Education}: Bachelor $\to 1$, Master $\to 2$, PhD $\to 3$, Post Doc $\to 4$.
 \end{itemize}
+
 The Likert items (SMA and FEELINGS) are already numeric. Two summed scores
 are appended to the cleaned dataset:
 \begin{itemize}
@@ -115,100 +108,82 @@ are appended to the cleaned dataset:
 \section{Tools}
 
 \subsection{Python Environment}
-The preprocessing and analysis pipelines are implemented in Python. The
-statistical work relies on standard scientific libraries: NumPy and pandas
-for data handling, SciPy for distributional quantiles and Pearson
-correlation, scikit-learn for the covariance estimator and the graphical
-lasso, and Matplotlib for figures. Network construction and the GraphML
-export are handled by NetworkX.
+The preprocessing and analysis pipelines are implemented in Python. The statistical work relies on standard scientific libraries: NumPy and pandas for data handling, SciPy for distributional quantiles and Pearson correlation, scikit-learn (\cite{pedregosa2011scikit}) for the covariance estimator and the graphical lasso, and Matplotlib for figures. Network construction and the GraphML export are handled by NetworkX (\cite{hagberg2008networkx}).
 
 \subsection{Visone}
 Final network layouts and visual styling are produced in
-Visone\footnote{\url{https://visone.ethz.ch/}}. The Python pipeline only
-exports a graph file with all relevant attributes; the actual layout, colour
-mapping, and edge-thickness mapping are applied in Visone.
+Visone (\cite{brandes2004visone}). The Python pipeline only exports a graph file with
+all relevant attributes; the actual layout, colour mapping, and
+edge-thickness mapping are applied in Visone.
 
 \section{Data Analysis}
 
-The analysis operates on the combined Emotional Well-Being and Social Media
-Addiction item set (eleven items total). Listwise deletion is applied
-across these items so that the same sample is used for every step of the
-pipeline.
+The analysis operates on the combined FEELING and 
+BSMAS item set ($k = 11$ items in total). Together with the $N = 113$ participants this yields a data matrix $\mathbf{X} \in \mathbb{R}^{113 \times 11}$, not counting the demographic data. Listwise deletion is applied across these items so that the same sample is used for every step of the pipeline.
 
 \subsection{Descriptive Statistics}
 
 \subsubsection{Samples}
 For age we report the mean, median, and empirical standard deviation, the
-observed minimum and maximum, and we visualise the distribution with a
-histogram and a horizontal box plot, with mean, median, and one-standard-
-deviation markers overlaid. For the two categorical demographics (gender
+observed minimum and maximum, and we visualise the distribution with a histogram and a horizontal box plot, with mean, median, and one-standard-deviation markers overlaid. For the two categorical demographics (gender
 and education), category counts are reported.
 
 \subsubsection{Scales}
 For each thematic cluster (SMA and FEELINGS) the mean and empirical standard
 deviation are reported for every individual item, as well as for the
 corresponding summed score together with its observed range. The number of
-participants meeting the established clinical BSMAS cut-off of $24$ is
-reported as well. Histograms of every item and of every summed score are
+participants meeting the established clinical BSMAS cut-off of $24$ (~\cite{luo2021bsmas}) is reported as well. Histograms of every item and of every summed score are
 produced for visual inspection.
 
 \subsection{Internal Scale Consistency}
 
 \subsubsection{Cronbach's $\alpha$}
-Cronbach's $\alpha$ is computed for each of the two psychometric scales
-(SMA and FEELINGS) to assess whether their items reliably measure the same
-underlying construct. The standard empirical-variance formulation is used.
+Cronbach's $\alpha$ (\cite{cronbach1951coefficient}) is computed for each of the two psychometric scales (SMA and FEELINGS) to assess whether their items reliably measure the same underlying construct.
 
 \subsubsection{Bootstrapped 95\% Confidence Interval}
-A non-parametric bootstrap with replacement is used to obtain a $95\%$
-confidence interval for each $\alpha$:
+\label{sec:Cronbach's alpha CI}
+A non-parametric bootstrap with replacement (\cite{efron1979bootstrap}) is used to obtain a $95\%$ confidence interval (CI) for each $\alpha$:
+
 \begin{enumerate}
-    \item Draw $2000$ resamples with repetition of size $N$ ($N = 113$ in our case) from the item matrix.
+    \item Draw $2000$ resamples with repetition of size $N$ ($N = 113$ in our case) from the data matrix $\mathbf{X}$.
     \item Recompute Cronbach's $\alpha$ on each resample.
     \item Take the $2.5$\textsuperscript{th} and
         $97.5$\textsuperscript{th} percentiles of the resulting empirical
-        distribution as the lower and upper CI bounds.
+        distribution as the lower and uppser CI bounds.
 \end{enumerate}
 The full bootstrap distribution is also retained and plotted as a histogram,
-together with the observed $\alpha$ and the CI bounds.
+together with the observed $\alpha$ and the CI bounds. Following D. George and P. Mallery \cite{george2003spss} a Cronbach's $\alpha \geq 0.7$ is considered acceptable, Cronbach's $\alpha \geq 0.8$ good, and Cronbach's $\alpha \geq 0.9$ excellent.
 
 \subsection{Network Modeling}
 
 \subsubsection{Standardisation}
-Each item is standardised to zero mean and unit variance (column-wise
-$z$-score) before being passed to the covariance estimator and the
-graphical lasso. The same standardisation is recomputed inside every
-bootstrap iteration from the resampled raw data, so that resampling and
-standardisation do not interfere.
+Each item is standardised to zero mean and unit variance (column-wise $z$-score) yielding a standardised data matrix $\mathbf{X}_{\text{std}}$, before being passed to the covariance estimator and the graphical lasso. The same standardisation is recomputed inside every bootstrap iteration from the resampled raw data  in sections ~\ref{sec:Edges CI}, ~\ref{sec:BEI CI}, so that resampling and standardisation do not interfere.
 
 \subsubsection{Multivariate-Normality Diagnostic}
-The graphical lasso relies on a joint Gaussian assumption for the item
-matrix. Marginal normality of each item alone does not imply joint
-normality, so we check the assumption directly through the squared
-Mahalanobis distance of each participant. Under joint normality, the squared Mahalanobis distances follow a
-$\chi^2$ distribution with DOF equal to the number of
-items ($k = 11$ in our case). We therefore:
+Our approach utilizes the graphical lasso which relies on a joint Gaussian assumption for the item matrix. Marginal normality of each item alone does not imply joint normality, so we check the assumption directly through the squared Mahalanobis distance $D_M^2(\mathbf{x})$ of each participant. Under joint normality, $D_M^2$ follows a $\chi^2$ distribution with DOF equal to the 
+number of items ($\mathrm{DOF} =k = 11$ in our case) (\cite{johnson2007applied}). We therefore:
+
 \begin{enumerate}
-    \item Compute the squared Mahalanobis distance for every participant
-        using a maximum-likelihood estimate of the covariance matrix on the
-        standardised item matrix.
-    \item Sort the distances and plot them against the corresponding
-        theoretical chi-squared quantiles (Q-Q plot), with the $y = x$
-        reference line overlaid.
+    \item Estimate the covariance matrix $\widehat{\boldsymbol{\Sigma}}$ by fitting the covariance estimator to the standardised data matrix $\mathbf{X}_{\text{std}}$
+    
+    \item Compute $D_M^2(\mathbf{x})$ for every participant using  the estimated covariance matrix $\widehat{\boldsymbol{\Sigma}}$ on the standardised data matrix $\mathbf{X}_{\text{std}}$
+    
+    \item Sort the distances and plot them against the corresponding theoretical $\chi^2$ quantiles (Q-Q plot), with the $y = x$ reference line overlaid.
 \end{enumerate}
 The plot is read qualitatively as a visual sanity check; no formal
 acceptance or rejection rule is applied.
 
 \subsubsection{Partial-Correlation Estimation}
-A sparse precision matrix is estimated with the graphical lasso, whose L1
-penalty parameter is selected by internal cross-validation (the value
-maximising the held-out log-likelihood is retained). The sparsity-inducing
+A sparse precision matrix $\widehat{\boldsymbol{\Omega}}$ is estimated with the graphical
+lasso (\cite{friedman2008sparse}), whose L1 penalty parameter is selected
+by internal cross-validation (the value maximising the held-out
+log-likelihood is retained). The sparsity-inducing
 penalty forces off-diagonal entries that are not supported by the data to
 exactly zero, which avoids the dense, noise-driven networks that a direct
-inversion of the empirical covariance would produce. The partial-correlation matrix is then obtained from the estimated precision
+inversion of the empirical covariance would produce. The partial-correlation matrix $\hat{\boldsymbol{\rho}}$ is then obtained from the estimated precision
 matrix by the standard normalisation
 \[
-    \rho_{ij} = -\,\widehat{\Omega}_{ij} \big/ \sqrt{\widehat{\Omega}_{ii}\,\widehat{\Omega}_{jj}} \quad i \not = j,
+    \hat{\rho_{ij}} = -\,\widehat{\Omega}_{ij} \big/ \sqrt{\widehat{\Omega}_{ii}\,\widehat{\Omega}_{jj}} \quad i \not = j,
 \]
 with the diagonal forced to $1$. Each non-zero off-diagonal entry
 corresponds to an edge between two items in the network, and its magnitude
@@ -217,36 +192,27 @@ gives the strength of the direct association.
 \subsection{Edges}
 
 \subsubsection{Bootstrapped 95\% Confidence Interval}
-For each unordered item pair $(i, j)$ with a non-zero partial correlation
-in the full-sample network, we test the null hypothesis
+\label{sec:Edges CI}
+For each unordered item pair $(i, j)$ with a non-zero partial correlation $\rho_{ij}$ in the full-sample network, we test the null hypothesis
 \[
     H_0:\; \rho_{ij} = 0 \qquad \text{against} \qquad
     H_1:\; \rho_{ij} \neq 0,
 \]
-i.e.\ no direct association between items $i$ and $j$ after conditioning
-on all other items in the network. The test is carried out at the
-$\alpha = 0.05$ significance level (two-sided) via a non-parametric
-bootstrap with replacement:
+i.e.\ no direct association between items $i$ and $j$ after conditioning on all other items in the network. The test is carried out at the $\alpha = 0.05$ significance level (two-sided) via a non-parametric bootstrap with replacement:
+
 \begin{enumerate}
-    \item Draw $100$ resamples with repetition of size $N$ ($N = 113$ in
-        our case) from the raw input matrix.
+    \item Draw $100$ resamples with repetition of size $N$ ($N = 113$ in our case) from the raw data matrix $\mathbf{X}$.
     \item For each resample, re-run the full estimation pipeline
         (standardisation, graphical lasso, partial-correlation conversion).
     \item Take the $2.5$\textsuperscript{th} and
-        $97.5$\textsuperscript{th} percentiles of the resulting bootstrap
-        distribution as the lower and upper bounds of the $95\%$
-        confidence interval for $\rho_{ij}$.
+        $97.5$\textsuperscript{th} percentiles of the resulting bootstrap distribution of each edge as the lower and upper bounds of the $95\%$ CI for $\rho_{ij}$.
 \end{enumerate}
 We reject $H_0$ for an edge whose $95\%$ CI strictly excludes zero (both
 bounds lie on the same side of $0$) and fail to reject it otherwise. Only
 the edges for which $H_0$ is rejected are considered as statistically significant and retained.
 
 \subsection{Bridge Expected Influence}
-
-For each node $i$ in one of the two communities ($C \in \{$FEELINGS,
-SMA$\}$), Bridge Expected Influence is computed on the full-sample
-partial-correlation matrix as the sum of the partial correlations from $i$
-to every node in the other community $C_{\text{other}}$:
+For each node $i$ in one of the two communities ($C \in \{$FEELINGS, SMA$\}$), Bridge Expected Influence (BEI) (~\cite{jones2021bridge}) is computed on the full-sample partial-correlation matrix as the sum of the partial correlations from $i$ to every node in the other community $C_{\text{other}}$:
 \[
     \widehat{\mathrm{BEI}}_i \;=\; \sum_{j \in C_{\text{other}}} \widehat{\rho}_{ij}.
 \]
@@ -255,63 +221,52 @@ mostly through positive or negative edges, and its magnitude tells us how
 strongly that node, in total, bridges the two clusters.
 
 \subsubsection{Bootstrapped 95\% Confidence Interval}
+\label{sec:BEI CI}
 For each node $i$ we test the null hypothesis
 \[
     H_0:\; \mathrm{BEI}_i = 0 \qquad \text{against} \qquad
     H_1:\; \mathrm{BEI}_i \neq 0,
 \]
-i.e.\ node $i$ has no net bridging contribution to the opposite community.
-The test is carried out at the $\alpha = 0.05$ significance level
-(two-sided) using the same case-bootstrap scheme as for the edges:
+i.e.\ node $i$ has no net bridging contribution to the opposite community. The test is carried out at the $\alpha = 0.05$ significance level (two-sided) using the same case-bootstrap scheme as for the edges:
 \begin{enumerate}
     \item Draw $100$ resamples with repetition of size $N$
-        ($N = 113$ in our case) from the raw input matrix.
-    \item For each resample, refit the full pipeline and recompute BEI
-        for every node.
+        ($N = 113$ in our case) from the raw data matrix $\mathbf{X}$.
+    \item For each resample, re-run the full estimation pipeline
+        (standardisation, graphical lasso, partial-correlation conversion) and recompute BEI for every node.
     \item Take the $2.5$\textsuperscript{th} and
         $97.5$\textsuperscript{th} percentiles of the bootstrap
         distribution as the lower and upper bounds of the $95\%$
-        confidence interval for $\mathrm{BEI}_i$.
+        CI for $\mathrm{BEI}_i$.
 \end{enumerate}
 We reject $H_0$ for a node whose $95\%$ CI strictly excludes zero (both
 bounds lie on the same side of $0$) and fail to reject it otherwise. Only
 the nodes for which $H_0$ is rejected are considered as statistically significant with respect to the BEI.
 
 \subsubsection{Bootstrapped CS-Coefficient}
-The stability of the BEI vector is quantified by the Correlation Stability
-(CS) coefficient, following Epskamp et al.\ (2018). In contrast to the
-with-replacement bootstrap used above, the CS-coefficient is based on a
-case-dropping subsample bootstrap that draws subsets without
+The stability of the BEI vector is quantified by the Correlation Stability (CS) coefficient, following Epskamp et al. (\cite{epskamp2018tutorial}). In contrast to the with-replacement bootstrap used above, the CS-coefficient is based on a case-dropping subsample bootstrap that draws subsets without
 replacement:
 
 \begin{enumerate}
     \item For each retention fraction $f \in \{0.95, 0.90, \dots, 0.05 \}$, draw $100$ subsamples of size
-        $\lfloor N\,f\rfloor$ ($N = 113$ in our case) without replacement.
-    \item On every subsample, refit the full pipeline and recompute the BEI
-        vector.
-    \item Compute Pearson's $r$ between the full-sample BEI vector and each
-        subsample BEI vector.
+        $\lfloor N\,f\rfloor$ ($N = 113$ in our case) without replacement from the raw data matrix $\mathbf{X}$.
+    \item On every subsamplere-run the full estimation pipeline
+        (standardisation, graphical lasso, partial-correlation conversion) and recompute the BEI vector.
+    \item Compute Pearson's $r$ between the full-sample BEI vector and each subsample BEI vector.
     \item Record $\widehat{P}_f = P(r \geq 0.7)$, the proportion of
-        subsamples whose BEI vector remains highly correlated with the
-        full-sample one. The loop is stopped early as soon as
-        $\widehat{P}_f < 0.95$, since larger drops cannot satisfy the
+        subsamples whose BEI vector shows a correlated greater or equal $0.7$ with the full-sample BEI vector. The loop is stopped early as soon as $\widehat{P}_f < 0.95$, since larger drops cannot satisfy the
         threshold.
 \end{enumerate}
 The CS-coefficient is then defined as the largest fraction of cases that
 can be \emph{dropped} while still maintaining $P(r \geq 0.7) \geq 0.95$.
-Because the grid is discrete, the threshold-crossing point is obtained by
-linear interpolation: let $f_{\text{pass}}$ be the smallest retention
-fraction whose $\widehat{P}_f$ exceeds $0.95$ and $f_{\text{fail}}$ the
-largest one that fails the threshold; we set
+Because the grid is discrete, the threshold-crossing point is obtained by linear interpolation: let $f_{\text{pass}}$ be the smallest retention fraction whose $\widehat{P}_f$ exceeds $0.95$ and $f_{\text{fail}}$ the largest one that fails the threshold; we set
 \[
     f_{\text{cross}} \;=\; f_{\text{fail}} \;+\; (f_{\text{pass}} - f_{\text{fail}})
         \cdot \frac{0.95 - \widehat{P}_{f_{\text{fail}}}}{\widehat{P}_{f_{\text{pass}}} - \widehat{P}_{f_{\text{fail}}}},
     \qquad
     \mathrm{CS} \;=\; 1 - f_{\text{cross}}.
 \]
-By convention, $\mathrm{CS} \geq 0.5$ is considered good,
-$\mathrm{CS} \geq 0.25$ acceptable, and anything below is regarded as
-unstable.
+$\mathrm{CS} \geq 0.5$ is considered good,
+$\mathrm{CS} \geq 0.25$ acceptable, and anything below is regarded as unstable.
 
 \section{Network Visualization}
 
