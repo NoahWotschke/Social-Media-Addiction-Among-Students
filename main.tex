@@ -37,7 +37,7 @@ sorting=ynt
 This document describes the methodology behind our exploratory network
 analysis of social media addiction and emotional well-being among
 university-aged students. Following the partial-correlation network
-approach of the reference paper, we combine the Bergen Social Media
+approach of the reference paper by \textcite{wang2025dark}, we combine the Bergen Social Media
 Addiction Scale (BSMAS) with a custom five-item Emotional Well-Being scale
 and estimate a single partial-correlation network on a sample of
 $N = 113$ participants. We assess Cronbach's $\alpha$ for both scales,
@@ -187,8 +187,7 @@ is used to obtain a $95\%$ CI for each $\alpha$:
         $97.5$\textsuperscript{th} percentiles of the resulting empirical
         distribution as the lower and upper CI bounds.
 \end{enumerate}
-The full bootstrap distribution is also retained and plotted as a histogram, together with the observed $\alpha$ and the CI bounds. (see
-Figure~\ref{fig:cronbach-ci}) Following~\textcite{george2003spss}, a Cronbach's $\alpha \geq 0.7$ is
+The full bootstrap distribution is also retained and plotted as a histogram, together with the observed $\alpha$ and the CI bounds (Figure~\ref{fig:cronbach-ci}). Following~\textcite{george2003spss}, a Cronbach's $\alpha \geq 0.7$ is
 considered acceptable, $\geq 0.8$ good, and $\geq 0.9$ excellent.
 
 \subsection{Network Modeling}
@@ -219,7 +218,7 @@ distribution with degrees of freedom equal to the number of items
     \item Compute $D_M^2(\mathbf{x})$ for every participant using
         $\widehat{\boldsymbol{\Sigma}}$ on $\mathbf{X}_{\text{std}}$.
 
-    \item Sort the distances and plot them against the corresponding theoretical $\chi^2$ quantiles (Q-Q plot), with the $y = x$ reference line overlaid. (See Figure~\ref{fig:qq-plot})
+    \item Sort the distances and plot them against the corresponding theoretical $\chi^2$ quantiles (Q-Q plot), with the $y = x$ reference line overlaid (Figure~\ref{fig:qq-plot}).
 \end{enumerate}
 The plot is read qualitatively as a visual sanity check; no formal
 acceptance or rejection rule is applied.
@@ -306,9 +305,9 @@ level (two-sided) using the same bootstrap scheme as for the edges:
         distribution as the lower and upper bounds of the $95\%$ CI for
         $\mathrm{BEI}_i$.
 \end{enumerate}
-We reject $H_0$ for a node whose $95\%$ CI strictly excludes zero (both bounds lie on the same side of $0$) and fail to reject it otherwise. Only the nodes for which $H_0$ is rejected are considered statistically significant with respect to the BEI. For each node, $\widehat{\mathrm{BEI}}_i$ is plotted with its $95\%$ CI
-as an error bar, together with the zero reference line
-(See Figure~\ref{fig:bei}).
+For each node, $\widehat{\mathrm{BEI}}_i$ is plotted with its $95\%$ CI as an error bar, together with the zero reference line (Figure~\ref{fig:bei}). \\
+
+We reject $H_0$ for a node whose $95\%$ CI strictly excludes zero (both bounds lie on the same side of $0$) and fail to reject it otherwise. Only the nodes for which $H_0$ is rejected are considered statistically significant with respect to the BEI.
 
 \subsubsection{Bootstrapped CS-Coefficient}
 The stability of the BEI vector is quantified by the Correlation Stability (CS) coefficient, following~\textcite{epskamp2018tutorial}. In
@@ -351,7 +350,7 @@ that fails the threshold; we set
     \mathrm{CS} \;=\; 1 - f_{\text{cross}}.
 \]
 $\mathrm{CS} \geq 0.5$ is considered good, $\mathrm{CS} \geq 0.25$
-acceptable, and anything below is regarded as unstable. $\widehat{P}_f$ is plotted as a function of $f$, together with the $0.95$ threshold and the interpolated $1 - \mathrm{CS}$ crossing line (see Figure~\ref{fig:cs-coef}).
+acceptable, and anything below is regarded as unstable. $\widehat{P}_f$ is plotted as a function of $f$, together with the $0.95$ threshold and the interpolated $1 - \mathrm{CS}$ crossing line (Figure~\ref{fig:cs-coef}).
 
 \section{Network Visualization}
 
@@ -392,7 +391,7 @@ attributes set at export time:
     \item \textbf{Node labels}: each node carries the item name from
         the questionnaire.
 \end{itemize}
-The styled networks are exported from Visone as image files for inclusion in the report and presentation. (See  Figure~\ref{fig:network-all} and ~\ref{fig:network-sig})
+The styled networks are exported from Visone as image files for inclusion in the report and presentation (Figures~\ref{fig:network-all} and~\ref{fig:network-sig}).
 
 \newpage
 \printbibliography
